@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/XLua/Examples/05_NoGc/NoGc.unity
+  isLoaded: 1
+  isActive: 1
