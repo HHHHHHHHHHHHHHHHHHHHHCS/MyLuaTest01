@@ -2,20 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using XLua;
 
-[System.Serializable]
-public class MyObject
-{
-    public string name;
-    public GameObject value;
-}
-
 [LuaCallCSharp]
-public class Test02 : MonoBehaviour
+public class Test03 : MonoBehaviour
 {
     public TextAsset luaScript;
-    public MyObject[] injections;
+
+    public InputField accountInput;
+    public InputField passwordInput;
+    public Button loginBtn;
 
     internal static LuaEnv luaEnv = new LuaEnv(); //all lua behaviour shared one luaenv only!
     internal static float lastGCTime = 0;
@@ -37,21 +34,15 @@ public class Test02 : MonoBehaviour
         meta.Dispose();
 
         scriptEnv.Set("self", this);
-        foreach (var injection in injections)
-        {
-            scriptEnv.Set(injection.name, injection.value);
-        }
 
-        luaEnv.DoString(luaScript.text, "Test02", scriptEnv);
 
-        Debug.Log(scriptEnv.Get<string,GameObject>("0"));
-        Debug.Log("====================================");
-        foreach (var item in scriptEnv.GetKeys())
-        {
-            Debug.Log(scriptEnv.Get<string, object>((string)item));
-        }
-        Debug.Log("====================================");
 
+        luaEnv.DoString(luaScript.text, "Test03", scriptEnv);
+
+
+        scriptEnv.Set("accountInput", accountInput);
+        scriptEnv.Set("passwordInput", passwordInput);
+        scriptEnv.Set("loginBtn", loginBtn);
 
         Action luaAwake = scriptEnv.Get<Action>("awake");
         scriptEnv.Get("start", out luaStart);
@@ -64,7 +55,6 @@ public class Test02 : MonoBehaviour
         }
     }
 
-    // Use this for initialization
     void Start()
     {
         if (luaStart != null)
@@ -73,7 +63,6 @@ public class Test02 : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (luaUpdate != null)
@@ -93,10 +82,9 @@ public class Test02 : MonoBehaviour
         {
             luaOnDestroy();
         }
-        luaOnDestroy = null;
-        luaUpdate = null;
         luaStart = null;
+        luaUpdate = null;
+        luaOnDestroy = null;
         scriptEnv.Dispose();
-        injections = null;
     }
 }

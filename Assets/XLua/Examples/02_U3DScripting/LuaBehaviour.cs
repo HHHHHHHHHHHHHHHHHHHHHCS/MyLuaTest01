@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using XLua;
 using System;
 
+
 [System.Serializable]
 public class Injection
 {
@@ -60,6 +61,7 @@ public class LuaBehaviour : MonoBehaviour {
         {
             luaAwake();
         }
+
     }
 
 	// Use this for initialization
