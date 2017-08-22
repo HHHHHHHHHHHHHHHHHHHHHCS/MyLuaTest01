@@ -1,0 +1,56 @@
+
+local calc_mt = 
+{
+	__index = 
+	{
+	
+
+	Add=function (self,...)
+	local args = {...};
+	local result = 0;
+	for k,v in pairs(args) do
+		result=result+v;
+	end
+	return result;
+	end,
+	
+	Mult = function (self,...)
+	local args = {...};
+	local result = 1;
+	for k,v in pairs(args) do
+		result=result*v;
+	end
+	return result;
+	end,
+
+	Sub = function (self,number, ... )
+	local args={...};
+	for k,v in pairs(args) do
+		number=number-v;
+	end
+	return number;
+	end,
+	
+	Div = function (self,number, ... )
+	local args={...};
+	for k,v in pairs(args) do
+		number=number/v;
+	end
+	return number;
+end
+}
+
+}
+
+
+Test04CalcDg=
+{
+	New = function(val,...)
+	print(...)
+	return setmetatable({value=val}, calc_mt);
+end
+}
+
+
+
+

@@ -1,0 +1,59 @@
+
+function ToArgsParam(...)
+	return ...
+end
+
+function Add(a, b) 
+	return a + b 
+end
+
+
+function SwapArray(arr)
+
+	local newArr=arr;
+	local length = arr.Length;
+	for i=1,length,1 do 
+		newArr[length-i]=arr[i-1];
+	end
+	return newArr;
+
+end
+
+local v3 = CS.UnityEngine.Vector3(7, 8, 9);
+local vt = CS.XLuaTest.MyStruct(5, 6);
+
+
+function Lua_Access_CSharp()
+	monoBehaviour:FloatParamMethod(123) --primitive
+
+	monoBehaviour:Vector3ParamMethod(v3) --vector3
+
+	local rnd = math.random(1, 100)
+	local r = monoBehaviour:Vector3ParamMethod({x = 1, y = 2, z = rnd}) --vector3
+	assert(r.x == 1 and r.y == 2 and r.z == rnd)
+
+   	monoBehaviour:StructParamMethod(vt) --custom struct
+
+
+   	r = monoBehaviour:StructParamMethod({name="Hello", lv=1, hp=2.2, money=3^10, unitID={  type=0,series=1,id=2  }})
+   	assert(r.name == "Hello" and r.unitID.id == 2)
+
+    monoBehaviour:EnumParamMethod(CS.MyTypeEnum.God) --enum
+
+    monoBehaviour:DecimalParamMethod(monoBehaviour.myDecimal[0])
+	monoBehaviour.my_double[0], monoBehaviour.my_double[1] = monoBehaviour.my_double[1], monoBehaviour.my_double[0] -- field
+end
+
+Exchanger = 
+{
+	ExChange = function(self, arr)
+	return SwapArray(arr)
+	end,
+	NoChange=function(self,arr)
+	return arr
+end
+}
+
+
+A = { B = { C = 789}}
+number = 1234;
